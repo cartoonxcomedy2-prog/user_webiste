@@ -47,13 +47,15 @@ function cardStatusBadge(type, entityId, isClosed) {
 
 // ============ UNIVERSITIES PAGE ============
 function initUniversitiesPage() {
-    if (!isLoggedIn()) return window.location.href = 'login';
+    if (!isLoggedIn()) return window.location.href = 'login.html';
     initPage('universities');
     var allUnis = [], filteredUnis = [], uniShown = 0, UNI_BATCH = 6;
     async function load() {
         try {
-            await loadUserApps();
-            var res = await apiFetch('universities');
+            var [_, res] = await Promise.all([
+                loadUserApps(),
+                apiFetch('universities')
+            ]);
             allUnis = res ? await res.json() : [];
             if (!Array.isArray(allUnis)) allUnis = [];
             filteredUnis = allUnis;
@@ -100,13 +102,15 @@ function initUniversitiesPage() {
 
 // ============ SCHOLARSHIPS PAGE ============
 function initScholarshipsPage() {
-    if (!isLoggedIn()) return window.location.href = 'login';
+    if (!isLoggedIn()) return window.location.href = 'login.html';
     initPage('scholarships');
     var allSchs = [], filteredSchs = [], schShown = 0, SCH_BATCH = 6;
     async function load() {
         try {
-            await loadUserApps();
-            var res = await apiFetch('scholarships');
+            var [_, res] = await Promise.all([
+                loadUserApps(),
+                apiFetch('scholarships')
+            ]);
             allSchs = res ? await res.json() : [];
             if (!Array.isArray(allSchs)) allSchs = [];
             filteredSchs = allSchs;
