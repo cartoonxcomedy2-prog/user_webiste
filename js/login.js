@@ -1,5 +1,5 @@
 // login.js - Login page functionality
-if (isLoggedIn()) window.location.href = 'home';
+if (isLoggedIn()) window.location.href = 'home.html';
 
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -20,7 +20,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
         localStorage.setItem('st_token', data.token);
         setUser(data);
         showToast('Login successful!');
-        setTimeout(() => window.location.href = 'home', 600);
+        setTimeout(() => window.location.href = 'home.html', 600);
     } catch (err) {
         showToast(err.message, 'error');
         btn.disabled = false;

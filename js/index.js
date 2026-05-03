@@ -14,7 +14,7 @@ document.getElementById('hamburger').addEventListener('click', function() {
 
 // If logged in, redirect to dashboard
 if (isLoggedIn()) {
-    window.location.href = 'home';
+    window.location.href = 'home.html';
 }
 
 // Smooth scroll for anchor links

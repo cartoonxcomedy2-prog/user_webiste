@@ -51,12 +51,12 @@ function logout() {
     localStorage.removeItem('st_token');
     localStorage.removeItem('st_user');
     if (!window.location.pathname.includes('login')) {
-        window.location.href = 'login';
+        window.location.href = 'login.html';
     }
 }
 
 function requireAuth() {
-    if (!isLoggedIn()) { window.location.href = 'login'; return false; }
+    if (!isLoggedIn()) { window.location.href = 'login.html'; return false; }
     return true;
 }
 
