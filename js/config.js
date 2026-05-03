@@ -24,10 +24,12 @@ function resolveAsset(val) {
     const s = val.toString().trim();
     if (s.startsWith('http')) return s;
     if (s.startsWith('data:')) return s;
-    const base = getApiBase().replace(/\/api\/?$/, '');
+    const base = getApiBase().replace(/\/+$/, '');
     let p = s;
     if (p.includes('uploads/')) p = p.split('uploads/').pop();
     if (p.startsWith('/')) p = p.slice(1);
+    
+    // If base already contains /api, we can just append /uploads since backend has app.use('/api/uploads', ...)
     return `${base}/uploads/${p}`;
 }
 
