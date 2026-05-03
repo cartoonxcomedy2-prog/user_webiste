@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Applications — EduKar</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+<div class="page-wrap">
+    <div class="container">
+        <div class="section-header" style="margin-bottom:32px;">
+            <h1 style="font-size:32px;"><i class="fas fa-chart-line" style="color:var(--primary);"></i> My Applications</h1>
+            <p>Track all your university and scholarship applications</p>
+        </div>
+        <div class="search-bar" style="margin-bottom:32px;"><i class="fas fa-search search-bar__icon"></i><input type="text" id="searchInput" placeholder="Search applications..."></div>
+        <div id="appList"><div class="page-loader"><div class="loader"></div></div></div>
+    </div>
+</div>
+<script src="js/config.js"></script>
+<script src="js/dashboard-nav.js"></script>
+<script src="js/pages.js"></script>
+<script>initTrackAppPage();</script>
+</body>
+</html>

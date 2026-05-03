@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications — EduKar</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+<div class="page-wrap">
+    <div class="container">
+        <div class="section-header section-header--between" style="margin-bottom:32px;">
+            <div><h1 style="font-size:32px;"><i class="fas fa-bell" style="color:var(--orange);"></i> Notifications</h1><p>Stay updated on your applications</p></div>
+            <button class="btn btn--outline btn--sm" id="markReadBtn"><i class="fas fa-check-double"></i> Mark All Read</button>
+        </div>
+        <div id="notifList"><div class="page-loader"><div class="loader"></div></div></div>
+    </div>
+</div>
+<script src="js/config.js"></script>
+<script src="js/dashboard-nav.js"></script>
+<script src="js/pages.js"></script>
+<script>initNotificationsPage(); document.getElementById('markReadBtn').addEventListener('click', function() { markAllRead(); });</script>
+</body>
+</html>
