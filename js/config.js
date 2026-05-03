@@ -1,12 +1,5 @@
 // ============ API CONFIG ============
-const API_BASE = (function() {
-    var h = window.location.hostname;
-    // Local dev: website is served separately, backend runs on port 5000
-    if (h === 'localhost' || h === '127.0.0.1' || h === '::1') {
-        if (window.location.port !== '5000') return 'http://localhost:5000/api';
-    }
-    return window.location.origin + '/api';
-})();
+const API_BASE = 'https://azlantraders.store/api';
 const getApiBase = () => localStorage.getItem('st_api_base') || API_BASE;
 const getToken = () => localStorage.getItem('st_token') || '';
 const getUser = () => { try { return JSON.parse(localStorage.getItem('st_user') || 'null'); } catch { return null; } };
