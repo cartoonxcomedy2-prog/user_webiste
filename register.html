@@ -24,6 +24,14 @@
     <meta name="twitter:title" content="EduKar | Top Universities & Scholarships">
     <meta name="twitter:description" content="Your ultimate gateway to top universities and scholarships. Apply online and track applications.">
 
+
+    <!-- Instant redirect for already-logged-in users (runs BEFORE body renders) -->
+    <script>
+        if (localStorage.getItem('st_token')) {
+            document.documentElement.style.display = 'none';
+            window.location.replace('home.html');
+        }
+    </script>
 </head>
 <body style="padding-top:72px;">
 
