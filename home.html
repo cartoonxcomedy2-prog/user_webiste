@@ -23,6 +23,22 @@
     <meta name="twitter:title" content="EduKar | Top Universities & Scholarships">
     <meta name="twitter:description" content="Your ultimate gateway to top universities and scholarships. Apply online and track applications.">
 
+
+    <!-- Auth guard: redirect to login BEFORE body renders if not logged in -->
+    <script>
+        (function() {
+            var token = localStorage.getItem('st_token');
+            var loginAt = parseInt(localStorage.getItem('st_login_at') || '0', 10);
+            var maxAge = 7 * 24 * 60 * 60 * 1000;
+            if (!token || !loginAt || (Date.now() - loginAt) > maxAge) {
+                localStorage.removeItem('st_token');
+                localStorage.removeItem('st_user');
+                localStorage.removeItem('st_login_at');
+                document.documentElement.style.display = 'none';
+                window.location.replace('login.html');
+            }
+        })();
+    </script>
 </head>
 <body style="visibility:hidden; opacity:0;">
 
