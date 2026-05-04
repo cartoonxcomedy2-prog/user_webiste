@@ -26,10 +26,19 @@
 
     <!-- Instant redirect for already-logged-in users (runs BEFORE body renders) -->
     <script>
-        if (localStorage.getItem('st_token')) {
-            document.documentElement.style.display = 'none';
-            window.location.replace('home.html');
-        }
+        (function() {
+            var token = localStorage.getItem('st_token');
+            var loginAt = parseInt(localStorage.getItem('st_login_at') || '0', 10);
+            var maxAge = 7 * 24 * 60 * 60 * 1000;
+            if (token && loginAt && (Date.now() - loginAt) < maxAge) {
+                document.documentElement.style.display = 'none';
+                window.location.replace('home.html');
+            } else if (token && !loginAt) {
+                // Old session without timestamp — clear it
+                localStorage.removeItem('st_token');
+                localStorage.removeItem('st_user');
+            }
+        })();
     </script>
 </head>
 <body style="padding-top:72px;">

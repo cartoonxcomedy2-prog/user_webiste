@@ -1,7 +1,23 @@
 // ============ API CONFIG ============
 const API_BASE = 'https://edukar.info/api';
+const SESSION_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 const getApiBase = () => localStorage.getItem('st_api_base') || API_BASE;
-const getToken = () => localStorage.getItem('st_token') || '';
+
+function getToken() {
+    var token = localStorage.getItem('st_token');
+    if (!token) return '';
+    // Check session expiry
+    var loginAt = parseInt(localStorage.getItem('st_login_at') || '0', 10);
+    if (loginAt && (Date.now() - loginAt) > SESSION_MAX_AGE_MS) {
+        // Session expired — clear everything
+        localStorage.removeItem('st_token');
+        localStorage.removeItem('st_user');
+        localStorage.removeItem('st_login_at');
+        return '';
+    }
+    return token;
+}
+
 const getUser = () => { try { return JSON.parse(localStorage.getItem('st_user') || 'null'); } catch { return null; } };
 const setUser = (u) => {
     if (!u) { localStorage.removeItem('st_user'); return; }
@@ -12,6 +28,11 @@ const setUser = (u) => {
     localStorage.setItem('st_user', JSON.stringify(safe));
 };
 const isLoggedIn = () => !!getToken();
+
+// Save login timestamp (call this when user logs in or registers)
+function saveLoginTimestamp() {
+    localStorage.setItem('st_login_at', String(Date.now()));
+}
 
 // HTML escape — prevent XSS from server-supplied content injected via innerHTML
 function escapeHtml(str) {
@@ -52,6 +73,7 @@ async function apiFetch(path, opts = {}) {
 function logout() {
     localStorage.removeItem('st_token');
     localStorage.removeItem('st_user');
+    localStorage.removeItem('st_login_at');
     // Clear all session/cache data
     sessionStorage.clear();
     if (!window.location.pathname.includes('login')) {

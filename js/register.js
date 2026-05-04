@@ -24,6 +24,7 @@ document.getElementById('regForm').addEventListener('submit', async (e) => {
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || 'Registration failed');
         localStorage.setItem('st_token', data.token);
+        saveLoginTimestamp();
         setUser(data);
         showToast('Account created!');
         setTimeout(() => window.location.href = 'home.html', 600);

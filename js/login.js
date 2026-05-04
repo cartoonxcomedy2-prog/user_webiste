@@ -18,6 +18,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || 'Login failed');
         localStorage.setItem('st_token', data.token);
+        saveLoginTimestamp();
         setUser(data);
         showToast('Login successful!');
         setTimeout(() => window.location.href = 'home.html', 600);
