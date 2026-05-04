@@ -12,10 +12,30 @@ document.getElementById('hamburger').addEventListener('click', function() {
     this.innerHTML = links.classList.contains('open') ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
 });
 
-// If logged in, redirect to dashboard
-if (isLoggedIn()) {
-    window.location.href = 'home.html';
-}
+// If logged in, update navbar to show Dashboard instead of Login/Register
+// Do NOT redirect — let the user stay on the landing page so shared links work
+(function() {
+    if (isLoggedIn()) {
+        var loginBtn = document.getElementById('navLoginBtn');
+        var regBtn = document.getElementById('navRegBtn');
+        if (loginBtn) {
+            loginBtn.href = 'home.html';
+            loginBtn.textContent = 'Dashboard';
+            loginBtn.className = 'btn btn--primary btn--sm';
+        }
+        if (regBtn) {
+            regBtn.href = '#';
+            regBtn.textContent = 'Logout';
+            regBtn.className = 'btn btn--outline btn--sm';
+            regBtn.style.borderColor = '#EF4444';
+            regBtn.style.color = '#EF4444';
+            regBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                logout();
+            });
+        }
+    }
+})();
 
 // Smooth scroll for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(function(a) {
@@ -112,4 +132,3 @@ function animateCounter(el, target) {
 }
 
 loadStats();
-

@@ -1,5 +1,5 @@
 // ============ API CONFIG ============
-const API_BASE = 'https://azlantraders.store/api';
+const API_BASE = 'https://edukar.info/api';
 const getApiBase = () => localStorage.getItem('st_api_base') || API_BASE;
 const getToken = () => localStorage.getItem('st_token') || '';
 const getUser = () => { try { return JSON.parse(localStorage.getItem('st_user') || 'null'); } catch { return null; } };
@@ -52,13 +52,21 @@ async function apiFetch(path, opts = {}) {
 function logout() {
     localStorage.removeItem('st_token');
     localStorage.removeItem('st_user');
+    // Clear all session/cache data
+    sessionStorage.clear();
     if (!window.location.pathname.includes('login')) {
         window.location.href = 'login.html';
     }
 }
 
 function requireAuth() {
-    if (!isLoggedIn()) { window.location.href = 'login.html'; return false; }
+    if (!isLoggedIn()) {
+        // Hide page content immediately to prevent flash of dashboard before redirect
+        document.body.style.visibility = 'hidden';
+        document.body.style.opacity = '0';
+        window.location.href = 'login.html';
+        return false;
+    }
     return true;
 }
 

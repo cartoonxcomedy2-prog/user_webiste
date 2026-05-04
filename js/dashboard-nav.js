@@ -13,12 +13,12 @@ function renderNav(activePage) {
     nav.className = 'navbar';
     nav.id = 'navbar';
     nav.innerHTML = '<div class="navbar__inner">' +
-        '<a href="home" class="navbar__logo"><div class="navbar__logo-icon"><i class="fas fa-graduation-cap"></i></div>EduKar</a>' +
+        '<a href="home.html" class="navbar__logo"><div class="navbar__logo-icon"><i class="fas fa-graduation-cap"></i></div>EduKar</a>' +
         '<ul class="navbar__links" id="navLinks">' +
-            '<li><a href="home"' + (activePage==='home'?' class="active"':'') + '>Home</a></li>' +
-            '<li><a href="universities"' + (activePage==='universities'?' class="active"':'') + '>Universities</a></li>' +
-            '<li><a href="scholarships"' + (activePage==='scholarships'?' class="active"':'') + '>Scholarships</a></li>' +
-            '<li><a href="notifications"' + (activePage==='notifications'?' class="active"':'') + ' style="position:relative;">Alerts' +
+            '<li><a href="home.html"' + (activePage==='home'?' class="active"':'') + '>Home</a></li>' +
+            '<li><a href="universities.html"' + (activePage==='universities'?' class="active"':'') + '>Universities</a></li>' +
+            '<li><a href="scholarships.html"' + (activePage==='scholarships'?' class="active"':'') + '>Scholarships</a></li>' +
+            '<li><a href="notifications.html"' + (activePage==='notifications'?' class="active"':'') + ' style="position:relative;">Alerts' +
                 (unreadCount > 0 ? '<span style="position:absolute; top:-6px; right:-10px; background:#EF4444; color:#fff; font-size:10px; font-weight:900; min-width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid #fff;">' + (unreadCount > 99 ? '99+' : unreadCount) + '</span>' : '') +
             '</a></li>' +
         '</ul>' +
@@ -31,9 +31,9 @@ function renderNav(activePage) {
                         '<div style="font-weight:800; font-size:14px; color:#0F172A;">' + escapeHtml(name) + '</div>' +
                         '<div style="font-size:12px; color:#94A3B8;">' + escapeHtml((user && user.email) || '') + '</div>' +
                     '</div>' +
-                    '<a href="my-account" style="display:flex; align-items:center; gap:10px; padding:12px 16px; text-decoration:none; color:#334155; font-size:13px; font-weight:600; transition:background .2s;" onmouseover="this.style.background=\'#F1F5F9\'" onmouseout="this.style.background=\'#fff\'"><i class="fas fa-user" style="color:#6366F1; width:16px;"></i> My Profile</a>' +
-                    '<a href="track-application" style="display:flex; align-items:center; gap:10px; padding:12px 16px; text-decoration:none; color:#334155; font-size:13px; font-weight:600; transition:background .2s;" onmouseover="this.style.background=\'#F1F5F9\'" onmouseout="this.style.background=\'#fff\'"><i class="fas fa-clipboard-list" style="color:#0EA5E9; width:16px;"></i> My Applications</a>' +
-                    '<a href="education-documents" style="display:flex; align-items:center; gap:10px; padding:12px 16px; text-decoration:none; color:#334155; font-size:13px; font-weight:600; transition:background .2s;" onmouseover="this.style.background=\'#F1F5F9\'" onmouseout="this.style.background=\'#fff\'"><i class="fas fa-folder-open" style="color:#F59E0B; width:16px;"></i> My Documents</a>' +
+                    '<a href="my-account.html" style="display:flex; align-items:center; gap:10px; padding:12px 16px; text-decoration:none; color:#334155; font-size:13px; font-weight:600; transition:background .2s;" onmouseover="this.style.background=\'#F1F5F9\'" onmouseout="this.style.background=\'#fff\'"><i class="fas fa-user" style="color:#6366F1; width:16px;"></i> My Profile</a>' +
+                    '<a href="track-application.html" style="display:flex; align-items:center; gap:10px; padding:12px 16px; text-decoration:none; color:#334155; font-size:13px; font-weight:600; transition:background .2s;" onmouseover="this.style.background=\'#F1F5F9\'" onmouseout="this.style.background=\'#fff\'"><i class="fas fa-clipboard-list" style="color:#0EA5E9; width:16px;"></i> My Applications</a>' +
+                    '<a href="education-documents.html" style="display:flex; align-items:center; gap:10px; padding:12px 16px; text-decoration:none; color:#334155; font-size:13px; font-weight:600; transition:background .2s;" onmouseover="this.style.background=\'#F1F5F9\'" onmouseout="this.style.background=\'#fff\'"><i class="fas fa-folder-open" style="color:#F59E0B; width:16px;"></i> My Documents</a>' +
                     '<div style="border-top:1px solid #F1F5F9;"></div>' +
                     '<button id="dropdownLogout" style="display:flex; align-items:center; gap:10px; padding:12px 16px; width:100%; border:none; background:#fff; color:#EF4444; font-size:13px; font-weight:700; cursor:pointer; transition:background .2s;" onmouseover="this.style.background=\'#FEF2F2\'" onmouseout="this.style.background=\'#fff\'"><i class="fas fa-sign-out-alt" style="width:16px;"></i> Logout</button>' +
                 '</div>' +
@@ -61,6 +61,10 @@ function renderNav(activePage) {
 
     // Add page top padding
     document.body.style.paddingTop = '72px';
+
+    // Show the page content now that nav is rendered and auth is confirmed
+    document.body.style.visibility = 'visible';
+    document.body.style.opacity = '1';
 
     // Scroll effect
     window.addEventListener('scroll', function() { nav.classList.toggle('scrolled', window.scrollY > 50); });
@@ -120,7 +124,7 @@ async function updateNavNotifCount() {
             count = data.notifications.filter(function(n) { return !n.isRead; }).length;
         }
         // Update badge in nav links
-        var alertLinks = document.querySelectorAll('a[href="notifications"]');
+        var alertLinks = document.querySelectorAll('a[href="notifications.html"]');
         alertLinks.forEach(function(link) {
             var badge = link.querySelector('span');
             if (count > 0) {
