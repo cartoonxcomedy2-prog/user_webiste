@@ -59,13 +59,13 @@ function renderAppDetail(app) {
     var thumbSrc = thumb ? resolveAsset(thumb) : '';
     html += '<div style="width:100%; height:220px; position:relative; overflow:hidden; border-radius:20px; margin-bottom:16px; box-shadow:0 8px 30px rgba(0,0,0,.12);">';
     if (thumbSrc) {
-        html += '<img src="' + thumbSrc + '" alt="' + name + '" style="width:100%; height:100%; object-fit:cover;" onerror="this.style.display=\'none\'; this.parentElement.style.background=\'linear-gradient(135deg, ' + primaryColor + ', #10B981)\'">';
+        html += '<img src="' + thumbSrc + '" alt="' + name + '" style="width:100%; height:100%; object-fit:contain;" onerror="this.style.display=\'none\'; this.parentElement.style.background=\'linear-gradient(135deg, ' + primaryColor + ', #10B981)\'">';
     } else {
         html += '<div style="width:100%; height:100%; background:linear-gradient(135deg, ' + primaryColor + ', #10B981);"></div>';
     }
     html += '<div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(15,23,42,0.88) 0%, rgba(15,23,42,0.1) 60%, transparent 100%); display:flex; flex-direction:column; justify-content:space-between; padding:20px 28px;">';
     html += '<div style="display:flex; justify-content:space-between; align-items:center;">';
-    html += '<a href="track-application" style="width:38px; height:38px; background:rgba(255,255,255,.15); border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; text-decoration:none; backdrop-filter:blur(8px);"><i class="fas fa-arrow-left"></i></a>';
+    html += '<a href="javascript:void(0)" onclick="history.back()" style="width:38px; height:38px; background:rgba(255,255,255,.15); border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; text-decoration:none; backdrop-filter:blur(8px); cursor:pointer;"><i class="fas fa-arrow-left"></i></a>';
     html += '<span style="padding:6px 14px; border-radius:8px; font-size:11px; font-weight:900; text-transform:uppercase; letter-spacing:1px; color:#fff; background:' + sc + ';">' + status + '</span>';
     html += '</div>';
     html += '<div><div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:rgba(255,255,255,.7); margin-bottom:4px;">' + type + ' Application</div>';
@@ -151,7 +151,7 @@ function renderAppDetail(app) {
             html += '<div style="padding:16px; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; margin-bottom:8px;">';
             html += '<div style="display:flex; align-items:center; gap:14px; margin-bottom:' + (ouAdmit || ouOffer ? '12px' : '0') + ';">';
             html += '<div style="width:44px; height:44px; border-radius:10px; background:#E2E8F0; overflow:hidden; display:flex; align-items:center; justify-content:center; flex-shrink:0;">';
-            html += (uniThumb ? '<img src="' + resolveAsset(uniThumb) + '" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display=\'none\'">' : '<i class="fas fa-university" style="color:#94A3B8;"></i>');
+            html += (uniThumb ? '<img src="' + resolveAsset(uniThumb) + '" style="width:100%;height:100%;object-fit:contain;" onerror="this.style.display=\'none\'">' : '<i class="fas fa-university" style="color:#94A3B8;"></i>');
             html += '</div>';
             html += '<div style="flex:1; min-width:0;"><div style="font-weight:800; font-size:14px; color:#0F172A;">' + uniName + '</div>';
             html += '<span style="display:inline-block; padding:2px 10px; border-radius:6px; font-size:10px; font-weight:800; color:' + ousc + '; background:' + ousc + '15; margin-top:4px;">' + ouStatus + '</span></div></div>';

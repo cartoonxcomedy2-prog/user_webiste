@@ -164,8 +164,8 @@ input, select, textarea { font-family: inherit; }
 /* === BANNER SLIDER === */
 .banner-slider { position: relative; border-radius: 24px; overflow: hidden; box-shadow: var(--shadow-lg); background: var(--slate-100); }
 .banner-slider__track { display: flex; will-change: transform; transition: transform .7s cubic-bezier(.25,.1,.25,1); }
-.banner-slider__slide { min-width: 100%; position: relative; flex-shrink: 0; }
-.banner-slider__slide img { width: 100%; height: 400px; object-fit: cover; object-position: center; image-rendering: high-quality; display: block; }
+.banner-slider__slide { min-width: 100%; position: relative; flex-shrink: 0; background: var(--slate-100); }
+.banner-slider__slide img { width: 100%; height: 350px; object-fit: cover; object-position: center; image-rendering: high-quality; display: block; margin: 0 auto; }
 .banner-slider__caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 24px 28px; background: linear-gradient(to top, rgba(0,0,0,.7), transparent); color: #fff; font-weight: 800; font-size: 20px; }
 .banner-slider__dots { display: flex; justify-content: center; gap: 8px; margin-top: 20px; }
 .banner-slider__dot { width: 10px; height: 10px; border-radius: 5px; background: var(--slate-300); border: none; cursor: pointer; transition: all var(--transition); }
@@ -189,8 +189,8 @@ input, select, textarea { font-family: inherit; }
 .left-panel-sticky { position: sticky; top: 100px; }
 
 /* Premium Hero Image inside card */
-.hero-image-wrap { width: 100%; height: 240px; overflow: hidden; position: relative; border-radius: 20px 20px 0 0; }
-.hero-image-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+.hero-image-wrap { width: 100%; height: 240px; overflow: hidden; position: relative; border-radius: 20px 20px 0 0; background: var(--slate-50); }
+.hero-image-wrap img { width: 100%; height: 100%; object-fit: contain; transition: transform .6s ease; }
 .detail-section:hover .hero-image-wrap img { transform: scale(1.05); }
 
 /* Premium Info Rows */
@@ -200,7 +200,7 @@ input, select, textarea { font-family: inherit; }
 .premium-info-value { font-weight: 800; color: var(--navy); }
 
 /* About Section */
-.about-text { color: var(--slate-600); line-height: 1.8; font-size: 14px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.about-text { color: var(--slate-600); line-height: 1.8; font-size: 14px; display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
 .about-text.expanded { -webkit-line-clamp: unset; }
 .see-more-btn { background: none; color: var(--primary); font-weight: 800; font-size: 13px; padding: 6px 12px; border-radius: 8px; margin-top: 8px; background: var(--primary-light); transition: all .3s; }
 .see-more-btn:hover { background: var(--primary); color: #fff; transform: translateY(-1px); }

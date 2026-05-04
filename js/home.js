@@ -27,6 +27,17 @@ async function loadHome() {
         renderBanners();
     } catch(e) { console.error('Banner load error:', e); renderBanners(); }
 
+    // Restore from cache instantly so page loads fast
+    try {
+        var cachedHome = sessionStorage.getItem('st_home_data');
+        if (cachedHome) {
+            var ch = JSON.parse(cachedHome);
+            document.getElementById('sUni').textContent = ch.uniCount || 0;
+            document.getElementById('sSch').textContent = ch.schCount || 0;
+            document.getElementById('sApp').textContent = ch.appCount || 0;
+            document.getElementById('sNotif').textContent = ch.notifCount || 0;
+        }
+    } catch(ce) {}
     try {
         var results = await Promise.all([
             apiFetch('universities'), apiFetch('scholarships'), apiFetch('users/profile')
@@ -43,7 +54,9 @@ async function loadHome() {
         document.getElementById('sUni').textContent = unis.length;
         document.getElementById('sSch').textContent = schs.length;
         document.getElementById('sApp').textContent = apps.length;
-        document.getElementById('sNotif').textContent = notifs.filter(function(n) { return !n.isRead; }).length;
+        var unreadCount = notifs.filter(function(n) { return !n.isRead; }).length;
+        document.getElementById('sNotif').textContent = unreadCount;
+        sessionStorage.setItem('st_home_data', JSON.stringify({ uniCount: unis.length, schCount: schs.length, appCount: apps.length, notifCount: unreadCount }));
 
         if (prof.name) {
             setUser(prof);

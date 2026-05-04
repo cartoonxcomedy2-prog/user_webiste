@@ -78,7 +78,7 @@ function renderDetail() {
     }
     html += '<div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(15,23,42,0.88) 0%, rgba(15,23,42,0.1) 60%, transparent 100%); display:flex; flex-direction:column; justify-content:space-between; padding:20px 28px;">';
     html += '<div style="display:flex; justify-content:space-between; align-items:center;">';
-    html += '<a href="universities" style="width:38px; height:38px; background:rgba(255,255,255,.15); border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; text-decoration:none; backdrop-filter:blur(8px);"><i class="fas fa-arrow-left"></i></a>';
+    html += '<a href="javascript:void(0)" onclick="history.back()" style="width:38px; height:38px; background:rgba(255,255,255,.15); border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; text-decoration:none; backdrop-filter:blur(8px); cursor:pointer;"><i class="fas fa-arrow-left"></i></a>';
     html += '<span style="padding:4px 12px; border-radius:6px; font-size:10px; font-weight:900; text-transform:uppercase; letter-spacing:1.5px; color:#fff; background:var(--primary);">' + uniType + '</span>';
     html += '</div>';
     html += '<h1 style="font-size:clamp(20px, 2.5vw, 32px); font-weight:900; color:#fff; line-height:1.2; text-shadow:0 2px 8px rgba(0,0,0,.5);">' + escapeHtml(uni.name || 'University') + '</h1>';
@@ -100,26 +100,20 @@ function renderDetail() {
     // ====== ABOUT (max 3 lines + See More) ======
     html += '<div style="background:#fff; border:1px solid #E2E8F0; border-radius:16px; padding:16px 20px; margin-bottom:16px;">';
     html += '<h3 style="font-size:15px; font-weight:800; color:#0F172A; margin-bottom:8px;"><i class="fas fa-building" style="color:var(--primary); margin-right:8px;"></i>About</h3>';
-    html += '<p class="about-text" id="aboutText" style="-webkit-line-clamp:3;">' + escapeHtml(uni.description || 'No description available.') + '</p>';
-    if ((uni.description || '').length > 80) {
+    html += '<p class="about-text" id="aboutText" style="-webkit-line-clamp:6;">' + escapeHtml(uni.description || 'No description available.') + '</p>';
+    if ((uni.description || '').length > 150) {
         html += '<button class="see-more-btn" id="aboutToggle">See More <i class="fas fa-chevron-down" style="font-size:10px; margin-left:4px;"></i></button>';
     }
     html += '</div>';
 
-    // ====== EXPANDABLE SECTIONS ======
+    // ====== EXPANDABLE SECTIONS (always show all) ======
     var sections = [
         { id: 'programs', icon: 'fa-graduation-cap', title: 'Available Programs (' + (uni.programs || []).length + ')', render: renderPrograms },
-        { id: 'fees', icon: 'fa-wallet', title: 'Fee Structure (' + (uni.programs || []).length + ')', render: renderFees }
+        { id: 'fees', icon: 'fa-wallet', title: 'Fee Structure (' + (uni.programs || []).length + ')', render: renderFees },
+        { id: 'eligibility', icon: 'fa-check-circle', title: 'Eligibility Criteria', render: renderEligibility },
+        { id: 'scholarship', icon: 'fa-award', title: 'Scholarship Details', render: renderScholarshipDetails },
+        { id: 'contact', icon: 'fa-phone-alt', title: 'Contact Info', render: renderContacts }
     ];
-    if (uni.eligibility && uni.eligibility.trim() !== '') {
-        sections.push({ id: 'eligibility', icon: 'fa-check-circle', title: 'Eligibility Criteria', render: renderEligibility });
-    }
-    if (uni.scholarshipDetails && uni.scholarshipDetails.trim() !== '') {
-        sections.push({ id: 'scholarship', icon: 'fa-award', title: 'Scholarship Details', render: renderScholarshipDetails });
-    }
-    if (uni.contactInfo && uni.contactInfo.length > 0) {
-        sections.push({ id: 'contact', icon: 'fa-phone-alt', title: 'Contact Info', render: renderContacts });
-    }
 
     sections.forEach(function (s) {
         html += '<div class="exp-section" id="sec_' + s.id + '">' +
@@ -134,7 +128,10 @@ function renderDetail() {
     if (at) at.addEventListener('click', function () {
         var txt = document.getElementById('aboutText');
         txt.classList.toggle('expanded');
-        at.textContent = txt.classList.contains('expanded') ? 'Show Less' : 'See More';
+        var isExpanded = txt.classList.contains('expanded');
+        at.innerHTML = isExpanded
+            ? 'Show Less <i class="fas fa-chevron-up" style="font-size:10px; margin-left:4px;"></i>'
+            : 'See More <i class="fas fa-chevron-down" style="font-size:10px; margin-left:4px;"></i>';
     });
 
     // Section toggle clicks
@@ -221,6 +218,7 @@ function renderScholarshipDetails() {
 
 function renderContacts() {
     var contacts = uni.contactInfo || [];
+    if (!Array.isArray(contacts)) contacts = [contacts];
     if (!contacts.length) return '<p style="color:var(--slate-400); font-size:13px;">No contact info available.</p>';
     return contacts.map(function (c) {
         return '<div style="background:var(--slate-50); border-radius:10px; padding:12px; margin-bottom:8px;">' +

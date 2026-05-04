@@ -160,12 +160,16 @@ function fileField(label, multerKey, savedValue, section, field) {
     
     var buttonsHtml = '';
     if (savedValue) {
-        buttonsHtml += '<button onclick="window.open(\'' + resolveAsset(savedValue).replace(/'/g,"\\'") + '\', \'_blank\')" class="btn btn--outline btn--sm" style="padding:6px 12px; cursor:pointer; font-weight:700;" title="View"><i class="fas fa-eye" style="margin-right:6px;"></i>View</button>';
+        buttonsHtml += '<button type="button" onclick="window.open(\'' + resolveAsset(savedValue).replace(/'/g,"\\'") + '\', \'_blank\')" class="btn btn--outline btn--sm" style="padding:6px 12px; cursor:pointer; font-weight:700; margin-right:6px;" title="View"><i class="fas fa-eye" style="margin-right:6px;"></i>View</button>';
+        if (section && field && userProfile && userProfile._id) {
+            var fName = (userProfile.name || 'document') + '-' + field;
+            buttonsHtml += '<button type="button" onclick="downloadEduDocument(\'' + userProfile._id + '\', \'' + section + '\', \'' + field + '\', \'' + fName.replace(/'/g,"\\'") + '\')" class="btn btn--outline btn--sm" style="padding:6px 12px; cursor:pointer; font-weight:700; margin-right:6px;" title="Download"><i class="fas fa-download" style="margin-right:6px;"></i>Download</button>';
+        }
     }
     buttonsHtml += '<label class="btn btn--primary btn--sm" style="padding:6px 12px; cursor:pointer; font-weight:700;"><i class="fas ' + (savedValue ? 'fa-edit' : 'fa-upload') + '" style="margin-right:6px;"></i>' + (savedValue ? 'Change' : 'Upload') + '<input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none;" data-field="' + multerKey + '"></label>';
     
     if (savedValue && section && field) {
-        buttonsHtml += '<button onclick="removeDocument(\'' + section + '\', \'' + field + '\')" class="btn btn--sm" style="padding:6px 12px; cursor:pointer; font-weight:700; background:#FEF2F2; color:#DC2626; border:1px solid #FCA5A5; margin-left:6px;"><i class="fas fa-times" style="margin-right:6px;"></i>Remove</button>';
+        buttonsHtml += '<button type="button" onclick="removeDocument(\'' + section + '\', \'' + field + '\')" class="btn btn--sm" style="padding:6px 12px; cursor:pointer; font-weight:700; background:#FEF2F2; color:#DC2626; border:1px solid #FCA5A5; margin-left:6px;"><i class="fas fa-times" style="margin-right:6px;"></i>Remove</button>';
     }
 
     return '<div class="doc-field">' + statusIcon +
@@ -173,7 +177,7 @@ function fileField(label, multerKey, savedValue, section, field) {
         (previewHtml ? previewHtml : '') + buttonsHtml + '</div>';
 }
 
-function lockedFileField(label, multerKey, savedValue) {
+function lockedFileField(label, multerKey, savedValue, section, field) {
     var previewHtml = '';
     if (savedValue) {
         var url = resolveAsset(savedValue);
@@ -185,9 +189,15 @@ function lockedFileField(label, multerKey, savedValue) {
     var statusIcon = savedValue
         ? '<div style="width:32px; height:32px; background:#D1FAE5; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><i class="fas fa-check" style="color:#059669; font-size:14px;"></i></div>'
         : '<div style="width:32px; height:32px; background:var(--slate-100); border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><i class="fas fa-cloud-upload-alt" style="color:var(--slate-400); font-size:14px;"></i></div>';
-    var viewBtn = savedValue
-        ? '<button onclick="window.open(\'' + resolveAsset(savedValue).replace(/'/g,"\\'") + '\', \'_blank\')" class="btn btn--outline btn--sm" style="padding:6px 12px; cursor:pointer; font-weight:700;" title="View"><i class="fas fa-eye" style="margin-right:6px;"></i>View</button>'
-        : '';
+    
+    var viewBtn = '';
+    if (savedValue) {
+        viewBtn += '<button type="button" onclick="window.open(\'' + resolveAsset(savedValue).replace(/'/g,"\\'") + '\', \'_blank\')" class="btn btn--outline btn--sm" style="padding:6px 12px; cursor:pointer; font-weight:700; margin-right:6px;" title="View"><i class="fas fa-eye" style="margin-right:6px;"></i>View</button>';
+        if (section && field && userProfile && userProfile._id) {
+            var fName = (userProfile.name || 'document') + '-' + field;
+            viewBtn += '<button type="button" onclick="downloadEduDocument(\'' + userProfile._id + '\', \'' + section + '\', \'' + field + '\', \'' + fName.replace(/'/g,"\\'") + '\')" class="btn btn--outline btn--sm" style="padding:6px 12px; cursor:pointer; font-weight:700;" title="Download"><i class="fas fa-download" style="margin-right:6px;"></i>Download</button>';
+        }
+    }
     return '<div class="doc-field">' + statusIcon +
         '<div style="flex:1;"><div style="font-weight:700; font-size:14px; color:var(--navy);">' + label + ' <span style="background:#FEF3C7; color:#92400E; font-size:10px; font-weight:900; padding:2px 8px; border-radius:6px; margin-left:6px;"><i class="fas fa-lock" style="font-size:9px; margin-right:3px;"></i>Locked</span></div><div style="font-size:12px; font-weight:700; color:' + (savedValue?'#059669':'var(--slate-400)') + ';">' + (savedValue?'Uploaded':'Not uploaded') + '</div></div>' +
         (previewHtml ? previewHtml : '') + viewBtn + '</div>';
@@ -309,9 +319,9 @@ function renderPersonal() {
         dropField('City', 'city', savedState ? getCitiesForState(savedState) : [], savedCity, 'fa-city') +
         field('Home Address', 'address', userProfile.address, 'text', 'fa-home') +
         (hasApplied ? lockedField('ID / CNIC Number', 'idNumber', nid.idNumber, 'text', 'fa-id-card') : field('ID / CNIC Number', 'idNumber', nid.idNumber, 'text', 'fa-id-card')) +
-        (hasApplied ? lockedFileField('National ID Card File', 'idFile', nid.file) : fileField('National ID Card File', 'idFile', nid.file, 'nationalId', 'file')) +
+        (hasApplied ? lockedFileField('National ID Card File', 'idFile', nid.file, 'nationalId', 'file') : fileField('National ID Card File', 'idFile', nid.file, 'nationalId', 'file')) +
         (hasApplied ? lockedField('Father CNIC Number', 'fatherCnicNumber', pi.fatherCnicNumber, 'text', 'fa-id-card') : field('Father CNIC Number', 'fatherCnicNumber', pi.fatherCnicNumber, 'text', 'fa-id-card')) +
-        (hasApplied ? lockedFileField('Father CNIC File', 'fatherCnicFile', pi.fatherCnicFile) : fileField('Father CNIC File', 'fatherCnicFile', pi.fatherCnicFile, 'personalInfo', 'fatherCnicFile')) +
+        (hasApplied ? lockedFileField('Father CNIC File', 'fatherCnicFile', pi.fatherCnicFile, 'personalInfo', 'fatherCnicFile') : fileField('Father CNIC File', 'fatherCnicFile', pi.fatherCnicFile, 'personalInfo', 'fatherCnicFile')) +
         '<button class="btn btn--primary btn--full" id="saveBtn" style="margin-top:16px;"><i class="fas fa-save"></i> Save Personal & ID Info</button>' +
         '</div>';
     attachFileHandlers();

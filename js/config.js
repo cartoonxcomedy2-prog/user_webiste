@@ -132,3 +132,27 @@ async function downloadDocument(appId, field, filename, universityId) {
         showToast('Download failed', 'error');
     }
 }
+
+// Download an education document via the secure backend API
+async function downloadEduDocument(userId, section, field, filename) {
+    if (!userId || !section || !field) { showToast('File not available', 'error'); return; }
+    try {
+        var params = 'downloadName=' + encodeURIComponent(filename || 'document');
+        var res = await apiFetch('users/' + userId + '/education/' + section + '/' + field + '/download?' + params);
+        if (!res || !res.ok) throw new Error('Download failed');
+        var blob = await res.blob();
+        var safeName = (filename || 'document').replace(/[^a-zA-Z0-9._-]/g, '-');
+        if (!/\.\w{2,5}$/.test(safeName)) safeName += '.pdf';
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = safeName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function() { URL.revokeObjectURL(a.href); }, 1000);
+        showToast('Downloaded!');
+    } catch(e) {
+        console.error('Download error:', e);
+        showToast('Download failed', 'error');
+    }
+}
