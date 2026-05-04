@@ -23,11 +23,8 @@ document.getElementById('regForm').addEventListener('submit', async (e) => {
         if (!res) throw new Error('Network error');
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || 'Registration failed');
-        localStorage.setItem('st_token', data.token);
-        saveLoginTimestamp();
-        setUser(data);
-        showToast('Account created!');
-        setTimeout(() => window.location.href = 'home.html', 600);
+        showToast('Account created! Please login.');
+        setTimeout(() => window.location.href = 'login.html', 1000);
     } catch (err) {
         showToast(err.message, 'error');
         btn.disabled = false;
